@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/linear_layout_style"
+              android:orientation="vertical"
+              android:padding="6dp"
+              android:layout_margin="6dp"
+>
+    <TextView
+            android:id="@+id/tv_material_code_t"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="物料代码："/>
+
+    <TextView
+            android:id="@+id/tv_material_code_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="28dp"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:text="112011863"/>
+    <TextView
+            android:id="@+id/tv_charg_t"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="自编批号：	"/>
+    <TextView
+            android:id="@+id/tv_charg_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="28dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="P231225036"/>
+    <TextView
+            android:id="@+id/tv_material_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="物料描述"/>
+    <TextView
+            android:id="@+id/tv_material_description_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="28dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:text="标签_乳酶生片外箱箱签/0.3g/5*12片/板/盒*400盒/箱/桂药04版"/>
+
+    <Button android:layout_width="match_parent" android:layout_height="match_parent"
+            android:text="打印" android:id="@+id/btn_print"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/linear_layout_style"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_marginLeft="28dp"
+            android:layout_marginRight="28dp">
+
+    </Button>
+
+
+
+</LinearLayout>
