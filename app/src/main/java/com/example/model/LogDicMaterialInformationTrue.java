@@ -110,6 +110,10 @@ public class LogDicMaterialInformationTrue  {
     @SerializedName("updateUser")
     private String updateUser;
 
+    private String printTime;
+
+    private String status;
+
     /**
      * l
      */
@@ -251,5 +255,21 @@ public class LogDicMaterialInformationTrue  {
 
     public void setCanback(DialogInterface.OnClickListener canback) {
         this.canback = canback;
+    }
+
+    public String getPrintTime() {
+        return printTime;
+    }
+
+    public void setPrintTime(String printTime) {
+        this.printTime = printTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.qrcode.AboutActivity;
 import com.example.qrcode.R;
 
 public class DialogUtils {
@@ -174,4 +176,19 @@ public class DialogUtils {
         dialog.show();
         return dialog;
     }
+
+    public static void showText(Context context,String text ) {
+        Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+
+//        View tv = toast.getView();
+//        tv.setBackgroundResource(R.drawable.linear_layout_style_blue);
+//        //设置文字颜色
+//        TextView tvt = (TextView) toast.getView().findViewById(android.R.id.message);
+//        tvt.setTextColor(getResources().getColor(R.color.white));
+//
+//        toast.setView(tv);
+        toast.show();
+    }
+
+
 }

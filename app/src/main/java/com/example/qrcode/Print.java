@@ -1,11 +1,16 @@
 package com.example.qrcode;
 
+import android.accessibilityservice.AccessibilityService;
 import android.app.AlertDialog;
 import android.bld.print.configuration.PrintConfig;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,7 +25,9 @@ import com.example.model.ApiPostModel;
 import com.example.model.LogDicMaterialInformationTrue;
 import com.example.model.ResponseModel;
 import com.example.utils.BitmapUtils;
+import com.example.utils.CommonUtils;
 import com.example.utils.DialogUtils;
+import com.example.utils.FileUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.zxing.BarcodeFormat;
@@ -48,6 +55,9 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
     public static final String url = "http://bi.guilinpharma.com:7080/api/getMaterialInformation";
     private String mPageType;
     private androidx.recyclerview.widget.RecyclerView recyclerView;
+
+    private LogDicMaterialInformationTrueAdapter adapter;
+    private List<LogDicMaterialInformationTrue> logDicMaterialInformationTrueList;
 
     private Context mContext;
     private EditText editNoTempCon;
@@ -102,10 +112,10 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
                             Type type = new TypeToken<ResponseModel<List<LogDicMaterialInformationTrue>>>(){}.getType();
                             ResponseModel<List<LogDicMaterialInformationTrue>> responseModel = gson.fromJson(response,type);
                             if("0".equals(responseModel.getCode())){
-                                List<LogDicMaterialInformationTrue> logDicMaterialInformationTrueList = responseModel.getData();
+                                logDicMaterialInformationTrueList = responseModel.getData();
                                 Log.d("请求返回",logDicMaterialInformationTrueList.toString());
                                 setCanBack(logDicMaterialInformationTrueList);
-                                LogDicMaterialInformationTrueAdapter adapter = new LogDicMaterialInformationTrueAdapter(logDicMaterialInformationTrueList);
+                                adapter = new LogDicMaterialInformationTrueAdapter(logDicMaterialInformationTrueList);
                                 recyclerView = findViewById(R.id.recyclerView);
                                 recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(Print.this));
                                 recyclerView.setAdapter(adapter);
@@ -159,11 +169,20 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
             isPrintEnable = true;
             if ("1".equals (mPageType)) {
                 printUtil.printEnableMark (true);
-
             } else {
                 printUtil.printEnableMark (false);
             }
             printTextTemplate(log);
+//            log.setPrintTime(CommonUtils.getNowTime());
+//            //把log对象转换成json字符串
+//            Gson gson = new Gson();
+//                         String allData = FileUtils.getFileName(this,"allData.json");
+//            if (allData == null) {
+//                allData = "[]";
+//            }
+
+
+
         }catch (Exception e){
             e.printStackTrace();
             Log.d("error",e.toString());
@@ -197,16 +216,16 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
                 log.setNum("");
             }
             //打印浓度
-            printUtil.printConcentration(26);
+//            printUtil.printConcentration(26);
 
             //标题
-            printUtil.printText(PrintConfig.Align.ALIGN_CENTER, PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, false, false, "------------------------------------------------------\n");
+//            printUtil.printText(PrintConfig.Align.ALIGN_CENTER, PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, false, false, "------------------------------------------------------\n");
 
             printUtil.printText(PrintConfig.Align.ALIGN_CENTER, PrintConfig.FontSize.TOP_FONT_SIZE_LARGE, true, false, "进厂物料标签\n");
 
             printUtil.printText(PrintConfig.Align.ALIGN_LEFT, PrintConfig.FontSize.TOP_FONT_SIZE_XSMALL, false, false, "文件号: SOP-LD-000001-A03-01\n");
 
-            printUtil.printText(PrintConfig.Align.ALIGN_CENTER, PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, false, false, "------------------------------------------------------\n");
+//            printUtil.printText(PrintConfig.Align.ALIGN_CENTER, PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, false, false, "------------------------------------------------------\n");
 
 //        printUtil.printLine (1);
 
@@ -223,10 +242,10 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
             printUtil.printText(PrintConfig.Align.ALIGN_LEFT, PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, false, false, "有效期至: \t"+log.getVfdat()+"\n");
             printUtil.printText(PrintConfig.Align.ALIGN_LEFT, PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, false, false, "复验期: \t"+log.getFydat()+"\n");
             printUtil.printText(PrintConfig.Align.ALIGN_LEFT, PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, false, false, "储存条件: \t"+log.getStorage()+"\n");
-            printUtil.printText(PrintConfig.Align.ALIGN_CENTER, PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, false, false, "------------------------------------------------------\n");
+//            printUtil.printText(PrintConfig.Align.ALIGN_CENTER, PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, false, false, "------------------------------------------------------\n");
 
             String text=log.getMatnr()+","+log.getCharg();
-            Bitmap bitmap=BitmapUtils.encode2dAsBitmap (text, BarcodeFormat.QR_CODE, 360, 360);
+            Bitmap bitmap=BitmapUtils.encode2dAsBitmap (text, BarcodeFormat.QR_CODE, 300, 300);
             bitmap=BitmapUtils.compressPic (bitmap, 300, 300, 80);
             printUtil.printBitmap (PrintConfig.Align.ALIGN_CENTER, bitmap);
 
@@ -336,4 +355,58 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
         }
         super.onBackPressed ();
     }
+
+    //获取sap数据
+    public void getSapData(){
+        for (int i = 0; i < logDicMaterialInformationTrueList.size(); i++) {
+            LogDicMaterialInformationTrue item = logDicMaterialInformationTrueList.get(i);
+            ApiPostModel apiPostModel = new ApiPostModel();
+            apiPostModel.setMatnr(item.getMatnr());
+            apiPostModel.setCharg(item.getCharg());
+            Gson gson = new Gson();
+            String json = gson.toJson(apiPostModel);
+            Log.d("json",json);
+            MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+            OkHttpUtils.postString().url(url).addHeader("Content-Type", "application/json").addHeader("Accept", "*/*").content(json).mediaType(mediaType).build().execute(new StringCallback()
+            {
+                @Override
+                public void onError(Call call, Exception e) {
+                    Log.d("error","接口请求失败");
+                    Log.d("error",e.toString());
+                }
+
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        //请求成功的处理
+                        Log.d("success","接口请求成功");
+                        Log.d("success",response);
+                        //解析json
+                        Gson gson = new Gson();
+                        Type type = new TypeToken<ResponseModel<List<LogDicMaterialInformationTrue>>>(){}.getType();
+                        ResponseModel<List<LogDicMaterialInformationTrue>> responseModel = gson.fromJson(response,type);
+                        if("0".equals(responseModel.getCode())){
+                            logDicMaterialInformationTrueList = responseModel.getData();
+                            Log.d("请求返回",logDicMaterialInformationTrueList.toString());
+                            setCanBack(logDicMaterialInformationTrueList);
+                            adapter = new LogDicMaterialInformationTrueAdapter(logDicMaterialInformationTrueList);
+                            recyclerView = findViewById(R.id.recyclerView);
+                            recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(Print.this));
+                            recyclerView.setAdapter(adapter);
+
+                        }else{
+                            DialogUtils.showCustomDialog(Print.this,"提示","数据获取失败          ",null);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.d("error","接口请求解析json失败");
+                        Log.d("error",e.toString());
+                    }
+
+                }
+
+            });
+        }
+    }
+
 }

@@ -6,6 +6,7 @@ import android.bld.print.configuration.PrintConfig;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,8 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import androidx.appcompat.app.ActionBar;
+
 import com.example.lc_print_sdk.PrintUtil;
 import com.example.utils.CommonUtils;
+import com.example.utils.DialogUtils;
 import com.example.utils.SPUtils;
 
 
@@ -29,82 +33,99 @@ public class AboutActivity extends BaseActivity implements PrintUtil.PrinterBind
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentLayout(R.layout.activity_about);
-        setTitle(getString(R.string.app_set_about));//设置标题
-        setBackArrow();//设置返回按钮和点击事件
 
-        printUtil =PrintUtil.getInstance (this);
-        printUtil.setPrintEventListener (this);
-        int getsupportprint=printUtil.getsupportprint ();
-        Log.d ("TAG", "onCreate: getsupportprint"+getsupportprint);
+        //将状态栏透明
+        StatusBar statusBar = new StatusBar(AboutActivity.this);
+        statusBar.setStatusBarColor(R.color.purple_500);
+//        //去除默认标题栏
+        ActionBar actionBar=getSupportActionBar();
+        if(actionBar!=null){
+//            actionBar.hide();
+            actionBar.setTitle("设置");
+            //返回按钮
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        try {
+            printUtil =PrintUtil.getInstance (this);
+            printUtil.setPrintEventListener (this);
+            int getsupportprint=printUtil.getsupportprint ();
+            Log.d ("TAG", "onCreate: getsupportprint"+getsupportprint);
 
-        int density=(int) SPUtils.get (AboutActivity.this, "density", 25);
+            int density=(int) SPUtils.get (AboutActivity.this, "density", 25);
+            Button btnPrintCheck = findViewById(R.id.btn_print_check);
+            Button btnSetDef = findViewById(R.id.btn_set_def);
 
+            TextView txt_version = findViewById(R.id.txt_version);
+            txt_version.setText(CommonUtils.getPackageName(this));
 
-        Button btnPrintCheck = findViewById(R.id.btn_print_check);
-        Button btnSetDef = findViewById(R.id.btn_set_def);
+            Button btn_density=findViewById (R.id.btn_density);
 
-        TextView txt_version = findViewById(R.id.txt_version);
-        txt_version.setText(CommonUtils.getPackageName(this));
+            mEditCon=findViewById (R.id.edit_con);
+            mEditCon.setText (density+"");
 
-        Button btn_density=findViewById (R.id.btn_density);
-
-        mEditCon=findViewById (R.id.edit_con);
-        mEditCon.setText (density+"");
-
-        btn_density.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty (mEditCon.getText ().toString ().trim ())) {
-                    Toast.makeText (AboutActivity.this, getString (R.string.toast_density), Toast.LENGTH_SHORT).show ();
-                    canBack=true;
-                    return;
+            btn_density.setOnClickListener (new View.OnClickListener () {
+                @Override
+                public void onClick(View v) {
+                    if (TextUtils.isEmpty (mEditCon.getText ().toString ().trim ())) {
+                        Toast.makeText (AboutActivity.this, getString (R.string.toast_density), Toast.LENGTH_SHORT).show ();
+                        canBack=true;
+                        return;
+                    }
+                    int density=Integer.valueOf (mEditCon.getText ().toString ().trim ());
+                    if (density > 39 || density < 1) {
+                        Toast.makeText (AboutActivity.this, getString (R.string.toast_density_outofrange), Toast.LENGTH_SHORT).show ();
+                        canBack=true;
+                        return;
+                    }
+                    printUtil.printConcentration (density);
+                    SPUtils.put (AboutActivity.this,"density",density);
+                    Toast.makeText (AboutActivity.this, "保存成功", Toast.LENGTH_SHORT).show ();
                 }
-                int density=Integer.valueOf (mEditCon.getText ().toString ().trim ());
-                if (density > 39 || density < 1) {
-                    Toast.makeText (AboutActivity.this, getString (R.string.toast_density_outofrange), Toast.LENGTH_SHORT).show ();
-                    canBack=true;
+            });
+
+
+            btnPrintCheck.setOnClickListener(view -> {
+                canBack = false;
+                try {
+                    String strVersion = printUtil.getVersion ();
+                    printUtil.printEnableMark(false);
+                    printUtil.printText(PrintConfig.Align.ALIGN_LEFT, PrintConfig.FontSize.TOP_FONT_SIZE_LARGE, true, false,"\nSDK Version: " + strVersion + "\n");
+                    printUtil.printLine(10);
+                    printUtil.start();
                     return;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                printUtil.printConcentration (density);
-                SPUtils.put (AboutActivity.this,"density",density);
-                Toast.makeText (AboutActivity.this, "保存成功", Toast.LENGTH_SHORT).show ();
-            }
-        });
+                canBack = true;
+            });
 
-
-        btnPrintCheck.setOnClickListener(view -> {
-            canBack = false;
-            try {
-                String strVersion = printUtil.getVersion ();
-                printUtil.printEnableMark(false);
-                printUtil.printText(PrintConfig.Align.ALIGN_LEFT, PrintConfig.FontSize.TOP_FONT_SIZE_LARGE, true, false,"\nSDK Version: " + strVersion + "\n");
-                printUtil.printLine(10);
-                printUtil.start();
-                return;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            canBack = true;
-        });
-
-        btnSetDef.setOnClickListener(view -> {
-            try {
-                printUtil.resetPrint ();
-                printUtil.setUnwindPaperLen (60);
-                mEditCon.setText (25+"");
-                showToast(getString(R.string.reset_completed));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+            btnSetDef.setOnClickListener(view -> {
+                try {
+                    printUtil.resetPrint ();
+                    printUtil.setUnwindPaperLen (60);
+                    mEditCon.setText (25+"");
+                    showToast(getString(R.string.reset_completed));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }catch (Exception e) {
+            Log.d("TAG", "onCreate: "+e.getMessage ());
+            e.printStackTrace();
+            showText("页面代码运行错误");
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (printUtil!=null){
-            printUtil.removePrintListener (this);
+            try{
+                printUtil.removePrintListener (this);
 
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -182,5 +203,15 @@ public class AboutActivity extends BaseActivity implements PrintUtil.PrinterBind
         }
         super.onBackPressed ();
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed(); // 返回上一页
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    public void showText(String text) {
+        DialogUtils.showText(this, text);
+    }
 }

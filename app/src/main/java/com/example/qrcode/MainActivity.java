@@ -9,9 +9,13 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -22,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.info.NetHelper;
 import com.example.lc_print_sdk.PrintUtil;
 import com.example.utils.DialogUtils;
 
@@ -54,10 +59,9 @@ public class MainActivity extends AppCompatActivity {
         searchLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showText("测试按钮点击搜索");
+                   DialogUtils.showText(MainActivity.this,"测试按钮点击搜索");
             }
         });
-
         LinearLayout sttingLayout = this.findViewById(R.id.settingsLayout);    //设置
 //        sttingLayout.setOnClickListener(new changeXmlListener());
         sttingLayout.setOnClickListener(new View.OnClickListener() {
@@ -121,8 +125,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Scan() {
+        if (!NetHelper.IsHaveInternet(getActivity())) {
+            DialogUtils.showWaringDialog(this, "提示", "未连接网络,请检查网络设置", 3000);
+            return;
+        }
         Intent intent = new Intent(MainActivity.this, Scan.class);
         startActivity(intent);
+    }
+
+    public Context getActivity() {
+        return this;
     }
     //测试跳转
     public class changeXmlListener implements View.OnClickListener {
@@ -170,6 +182,34 @@ public class MainActivity extends AppCompatActivity {
     public void showText(String text) {
         Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
     }
+    //判断网络是否连接
+    public boolean isNetworkConnected(){
 
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                Network network = cm.getActiveNetwork();
+                if (network == null) {
+                    // 未连接网络
+                    DialogUtils.showText(this,"未连接网络");
+                    return false;
+                } else {
+                    NetworkCapabilities capabilities = cm.getNetworkCapabilities(network);
+                    if (capabilities == null) {
+                        DialogUtils.showText(this,"无法获取网络能力");
+                        return false;
+                        // 无法获取网络能力
+                    } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                        //网络通过WiFi连接
+                    } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                        //网络通过蜂窝数据连接
+                    } else {
+                        // 其他网络类型，比如以太网
+                    }
+                }
+            }
+        }
+        return true;
+    }
 
 }

@@ -18,12 +18,12 @@
     <string name="btn_print">Print</string>
     <string name="btn_print2">Print2</string>
     <string name="in_txt">Please enter text</string>
-    <string name="txt_check">Self-check info</string>
+    <string name="txt_check">检查</string>
     <string name="about_f_version">Firmware version: </string>
-    <string name="txt_set_def">Reset printer</string>
+    <string name="txt_set_def">重置</string>
     <string name="edit_hint">Print density 1~39</string>
     <string name="edit_hint_distance">Paper distance > 0</string>
-    <string name="txt_density">Density: </string>
+    <string name="txt_density">浓度: </string>
     <string name="txt_distance">Distance: </string>
 
     <!-- LabelTextActivity -->
@@ -67,40 +67,40 @@
     <string name="loading">Printing……</string>
 
     <!-- toast -->
-    <string name="toast_print_success">Print completed</string>
-    <string name="toast_print_error">Print failed</string>
-    <string name="toast_high_temperature">high temperature</string>
-    <string name="toast_no_paper">Out of paper</string>
-    <string name="toast_no_data">Print data cannot be empty</string>
-    <string name="toast_no_img">Unable to get picture</string>
-    <string name="toast_str">Characters are too long to print</string>
-    <string name="toast_number_check">Please enter a number from 0-9</string>
-    <string name="toast_density">Print density cannot be empty</string>
-    <string name="toast_content">the content can not be blank</string>
-    <string name="reset_completed">Reset printer completely!</string>
-    <string name="toast_barcode_error">Bar code data error!</string>
-    <string name="toast_density_outofrange">Print concentration output range [1 ~ 39]!</string>
-    <string name="toast_distance_invalid">Incorrect paper distance!</string>
-    <string name="toast_input_parameter_error">input parameter error!</string>
-    <string name="toast_Instruction_error">Instruction error!</string>
-    <string name="toast_data_is_invalid">data is invalid!</string>
-    <string name="toast_abnormal_black_mark_detection">abnormal black mark detection!</string>
-    <string name="toast_moving_paper">moving paper!</string>
-    <string name="toast_device_busy">device busy!</string>
-    <string name="toast_device_is_not_turned_on">device is not turned on!</string>
-    <string name="toast_low_electricity">low electricity!</string>
+    <string name="toast_print_success">打印完成</string>
+    <string name="toast_print_error">打印失败</string>
+    <string name="toast_high_temperature">温度过高</string>
+    <string name="toast_no_paper">纸张不足</string>
+    <string name="toast_no_data">打印数据不能为空</string>
+    <string name="toast_no_img">无法获取图片</string>
+    <string name="toast_str">字符太长无法打印</string>
+    <string name="toast_number_check">请输入0-9之间的数字</string>
+    <string name="toast_density">打印浓度不能为空</string>
+    <string name="toast_content">内容不能为空</string>
+    <string name="reset_completed">重置成功!</string>
+    <string name="toast_barcode_error">条码数据错误!</string>
+    <string name="toast_density_outofrange">打印浓度范围 [1 ~ 39]!</string>
+    <string name="toast_distance_invalid">纸张距离不正确!</string>
+    <string name="toast_input_parameter_error">输入参数错误!</string>
+    <string name="toast_Instruction_error">指令错误!</string>
+    <string name="toast_data_is_invalid">数据无效!</string>
+    <string name="toast_abnormal_black_mark_detection">异常黑斑检测!</string>
+    <string name="toast_moving_paper">跑纸!</string>
+    <string name="toast_device_busy">设备忙碌!</string>
+    <string name="toast_device_is_not_turned_on">设备未打开!</string>
+    <string name="toast_low_electricity">低电量!</string>
     <string name="toast_print_now">print now!</string>
-    <string name="toast_illegal_concentrationr">illegal concentrationr!</string>
-    <string name="toast_error_printing_barcode">error printing barcode!</string>
-    <string name="toast_error_printing_bitmap">error printing bitmap!</string>
-    <string name="toast_print_bitmap_width_overflow">print bitmap width overflow!</string>
-    <string name="toast_mac_check_error">mac check error!</string>
-    <string name="toast_parameter_error">parameter error!</string>
-    <string name="toast_error_printing_qrcode">error printing qrcode!</string>
-    <string name="toast_print_text_error">print text error!</string>
-    <string name="toast_unknown_error">unknown error!</string>
-    <string name="toast_result_already_exists">result already exists!</string>
-    <string name="toast_overtime">overtime!</string>
+    <string name="toast_illegal_concentrationr">浓度不合规!</string>
+    <string name="toast_error_printing_barcode">打印条码错误!</string>
+    <string name="toast_error_printing_bitmap">打印位图错误!</string>
+    <string name="toast_print_bitmap_width_overflow">打印位图宽度溢出!</string>
+    <string name="toast_mac_check_error">MAC检查错误!</string>
+    <string name="toast_parameter_error">参数错误!</string>
+    <string name="toast_error_printing_qrcode">打印二维码错误!</string>
+    <string name="toast_print_text_error">打印文本错误!</string>
+    <string name="toast_unknown_error">未知错误!</string>
+    <string name="toast_result_already_exists">结果已存在!</string>
+    <string name="toast_overtime">超时!</string>
     <!-- 标签 -->
     <string name="Label_test1">Label test</string>
     <string name="Label_test2">This is a line of test labels</string>
@@ -132,5 +132,5 @@
     <string name="default_distance">1000</string>
     <string name="return_distance">ReturnPapaer:</string>
     <string name="toast_rerurn_distance_invalid">Illegal paper return distance</string>
-    <string name="save_density">save_density</string>
+    <string name="save_density">保存</string>
 </resources>

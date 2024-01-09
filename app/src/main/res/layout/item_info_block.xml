@@ -22,26 +22,13 @@
             android:textSize="18sp"
             android:textColor="@color/black"
             android:text="112011863"/>
-    <TextView
-            android:id="@+id/tv_charg_t"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="自编批号：	"/>
-    <TextView
-            android:id="@+id/tv_charg_v"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="28dp"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:text="P231225036"/>
+
     <TextView
             android:id="@+id/tv_material_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:text="物料描述"/>
+            android:text="物料描述："/>
     <TextView
             android:id="@+id/tv_material_description_v"
             android:layout_width="wrap_content"
@@ -50,7 +37,106 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             android:text="标签_乳酶生片外箱箱签/0.3g/5*12片/板/盒*400盒/箱/桂药04版"/>
+    <TextView
+        android:id="@+id/tv_charg_t"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="自编批号：	"/>
+    <TextView
+        android:id="@+id/tv_charg_v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="P231225036"/>
+    <TextView
+        android:id="@+id/tv_maker_t"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="生产商批号："/>
+    <TextView
+        android:id="@+id/tv_maker_v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="2411000137"/>
 
+
+    <TextView
+        android:id="@+id/tv_vfdat_t"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="有效期至："/>
+    <TextView
+        android:id="@+id/tv_vfdat_v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="/"/>
+    <TextView
+        android:id="@+id/tv_fydat_t"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="复验期："/>
+    <TextView
+        android:id="@+id/tv_fydat_v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="2026.03.24"/>
+    <TextView
+        android:id="@+id/tv_mnum_t"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="供应商批号："/>
+    <TextView
+        android:id="@+id/tv_mnum_v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="3033109"/>
+    <TextView
+        android:id="@+id/tv_num_t"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="数量："/>
+    <TextView
+        android:id="@+id/tv_num_v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="25kg"/>
+    <TextView
+        android:id="@+id/tv_storage_t"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="储存方式："/>
+    <TextView
+        android:id="@+id/tv_storage_v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="密封干燥，远离热源或日晒"/>
     <Button android:layout_width="match_parent" android:layout_height="match_parent"
             android:text="打印" android:id="@+id/btn_print"
             android:layout_marginTop="10dp"

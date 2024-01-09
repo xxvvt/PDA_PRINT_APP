@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class CommonUtils {
 
     private static long lastClickTime = 0;
@@ -36,5 +39,11 @@ public class CommonUtils {
             lastClickTime = time;
             return false;
         }
+    }
+
+    public static String getNowTime() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date(System.currentTimeMillis());
+        return simpleDateFormat.format(date);
     }
 }

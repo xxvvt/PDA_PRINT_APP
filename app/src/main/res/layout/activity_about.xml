@@ -24,8 +24,8 @@
         android:layout_centerHorizontal="true"
         android:text="@string/txt_check"
         android:layout_below="@+id/img_logo"
+        android:background="@drawable/linear_layout_style"
         android:textColor="@color/white"
-        android:background="@color/blue_light"
         android:textSize="18sp"/>
 
     <Button
@@ -36,8 +36,8 @@
         android:layout_centerHorizontal="true"
         android:text="@string/txt_set_def"
         android:layout_below="@+id/btn_print_check"
+        android:background="@drawable/linear_layout_style"
         android:textColor="@color/white"
-        android:background="@color/blue_light"
         android:textSize="18sp"/>
 
     <LinearLayout
@@ -52,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/txt_density"
+            android:textSize="18sp"
             android:textColor="@color/black" />
 
 
@@ -68,8 +69,8 @@
             android:id="@+id/btn_density"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/linear_layout_style"
             android:textColor="@color/white"
-            android:background="@color/blue_light"
             android:text="@string/save_density">
 
         </Button>
@@ -122,7 +123,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="5dp"
             android:textSize="15sp"
-            android:text="Print_1.1.1_20210303_beta" />
+            android:text="Print_1.1.1_20230103_beta" />
     </LinearLayout>
 
 </RelativeLayout>

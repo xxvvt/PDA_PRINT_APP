@@ -46,7 +46,44 @@
 
     </LinearLayout>
 
-    <!-- 搜索物料功能块 -->
+
+
+    <!-- 设置功能块 -->
+    <LinearLayout
+        android:id="@+id/settingsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/rounded_white_background"
+        app:layout_constraintTop_toBottomOf="@id/scanLayout"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.1">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/sz"
+            android:padding="8dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:scaleType="centerCrop"
+            android:contentDescription="Settings Icon" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="设置"
+            android:textColor="@color/text_color"
+            android:textSize="20sp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical" />
+
+    </LinearLayout>
+    <!-- 搜索功能块 -->
     <LinearLayout
         android:id="@+id/searchLayout"
         android:layout_width="match_parent"
@@ -55,7 +92,7 @@
         android:layout_margin="10dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/rounded_white_background"
-        app:layout_constraintTop_toBottomOf="@id/scanLayout"
+        app:layout_constraintTop_toBottomOf="@id/settingsLayout"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintVertical_bias="0.1">
 
@@ -75,49 +112,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="搜索物料"
-
-            android:textColor="@color/text_color"
-            android:textSize="20sp"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical" />
-
-    </LinearLayout>
-
-    <!-- 设置功能块 -->
-    <LinearLayout
-        android:id="@+id/settingsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:orientation="horizontal"
-        android:layout_margin="10dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/rounded_white_background"
-        app:layout_constraintTop_toBottomOf="@id/searchLayout"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintVertical_bias="0.1">
-
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/sz"
-            android:padding="8dp"
-            android:layout_marginRight="20dp"
-            android:gravity="center_vertical"
-            android:layout_gravity="center_vertical"
-            android:scaleType="centerCrop"
-            android:contentDescription="Settings Icon" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
             android:text="测试"
+
             android:textColor="@color/text_color"
             android:textSize="20sp"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical" />
 
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
