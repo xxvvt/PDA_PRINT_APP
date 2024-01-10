@@ -23,6 +23,7 @@ import com.example.info.LogDicMaterialInformationTrueAdapter;
 import com.example.lc_print_sdk.PrintUtil;
 import com.example.model.ApiPostModel;
 import com.example.model.LogDicMaterialInformationTrue;
+import com.example.model.MB52;
 import com.example.model.ResponseModel;
 import com.example.utils.BitmapUtils;
 import com.example.utils.CommonUtils;
@@ -383,16 +384,11 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
                         Log.d("success",response);
                         //解析json
                         Gson gson = new Gson();
-                        Type type = new TypeToken<ResponseModel<List<LogDicMaterialInformationTrue>>>(){}.getType();
-                        ResponseModel<List<LogDicMaterialInformationTrue>> responseModel = gson.fromJson(response,type);
-                        if("0".equals(responseModel.getCode())){
-                            logDicMaterialInformationTrueList = responseModel.getData();
-                            Log.d("请求返回",logDicMaterialInformationTrueList.toString());
-                            setCanBack(logDicMaterialInformationTrueList);
-                            adapter = new LogDicMaterialInformationTrueAdapter(logDicMaterialInformationTrueList);
-                            recyclerView = findViewById(R.id.recyclerView);
-                            recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(Print.this));
-                            recyclerView.setAdapter(adapter);
+                        Type type = new TypeToken<List<MB52>>(){}.getType();
+                        List<MB52> responseModel = gson.fromJson(response,type);
+                        if(responseModel.size()>0){
+                            MB52 item  = responseModel.get(0);
+                            item.setCharg(item.getCharg());
 
                         }else{
                             DialogUtils.showCustomDialog(Print.this,"提示","数据获取失败          ",null);

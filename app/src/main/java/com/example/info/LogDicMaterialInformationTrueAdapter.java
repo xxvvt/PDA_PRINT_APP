@@ -63,7 +63,10 @@ public class LogDicMaterialInformationTrueAdapter extends RecyclerView.Adapter<L
         holder.tv_mnum_v.setText(infoBlock.getMnum());
         holder.tv_num_v.setText(infoBlock.getNum());
         holder.tv_storage_v.setText(infoBlock.getStorage());
-
+        holder.tv_zspecno_v.setText(infoBlock.getZspecno());
+        holder.tv_zspeno_v.setText(infoBlock.getZspeno());
+        //设置sap状态
+        setStatus(holder,infoBlock);
         holder.btn_print.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -71,6 +74,21 @@ public class LogDicMaterialInformationTrueAdapter extends RecyclerView.Adapter<L
             }
         });
 
+    }
+    public void setStatus(@NonNull ViewHolder holder,LogDicMaterialInformationTrue infoBlocks) {
+        if(infoBlocks.getInsme()>0){
+            holder.tv_status_v.setText("待验");
+            //指定文字颜色为@color/insme
+            holder.tv_status_v.setTextColor(holder.itemView.getResources().getColor(R.color.insme));
+        }
+        else if(infoBlocks.getSpeme()>0){
+            holder.tv_status_v.setText("不合格");
+            holder.tv_status_v.setTextColor(holder.itemView.getResources().getColor(R.color.speme));
+        }
+        else if(infoBlocks.getLabst()>0){
+            holder.tv_status_v.setText("合格");
+            holder.tv_status_v.setTextColor(holder.itemView.getResources().getColor(R.color.labst));
+        }
     }
 
     @Override
@@ -88,6 +106,9 @@ public class LogDicMaterialInformationTrueAdapter extends RecyclerView.Adapter<L
         public TextView tv_mnum_v;
         public TextView tv_num_v;
         public TextView tv_storage_v;
+        public TextView tv_status_v;
+        public TextView tv_zspecno_v;
+        public TextView tv_zspeno_v;
 
         public Button btn_print;
 
@@ -103,6 +124,9 @@ public class LogDicMaterialInformationTrueAdapter extends RecyclerView.Adapter<L
             tv_num_v = itemView.findViewById(R.id.tv_num_v);
             tv_storage_v = itemView.findViewById(R.id.tv_storage_v);
             btn_print = itemView.findViewById(R.id.btn_print);
+            tv_status_v = itemView.findViewById(R.id.tv_status_v);
+            tv_zspecno_v = itemView.findViewById(R.id.tv_zspecno_v);
+            tv_zspeno_v = itemView.findViewById(R.id.tv_zspeno_v);
 
 //            textValue = itemView.findViewById(R.id.textValue);
         }

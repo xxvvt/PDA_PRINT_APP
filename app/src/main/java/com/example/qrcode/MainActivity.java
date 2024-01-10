@@ -55,13 +55,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        LinearLayout searchLayout = this.findViewById(R.id.searchLayout);    //搜索
-        searchLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                   DialogUtils.showText(MainActivity.this,"测试按钮点击搜索");
-            }
-        });
+//        LinearLayout searchLayout = this.findViewById(R.id.searchLayout);    //搜索
+//        searchLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, Print.class);
+//                intent.putExtra(Print.Matnr, "112006285");
+//                intent.putExtra(Print.Charg, "P240109001");
+//                startActivity(intent);
+//            }
+//        });
         LinearLayout sttingLayout = this.findViewById(R.id.settingsLayout);    //设置
 //        sttingLayout.setOnClickListener(new changeXmlListener());
         sttingLayout.setOnClickListener(new View.OnClickListener() {

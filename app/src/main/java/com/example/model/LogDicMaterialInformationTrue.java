@@ -113,7 +113,11 @@ public class LogDicMaterialInformationTrue  {
     private String printTime;
 
     private String status;
-
+    private long labst;
+    private long insme;
+    private long speme;
+    private String zspecno;
+    private String zspeno;
     /**
      * l
      */
@@ -271,5 +275,45 @@ public class LogDicMaterialInformationTrue  {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public long getLabst() {
+        return labst;
+    }
+
+    public void setLabst(long labst) {
+        this.labst = labst;
+    }
+
+    public long getInsme() {
+        return insme;
+    }
+
+    public void setInsme(long insme) {
+        this.insme = insme;
+    }
+
+    public long getSpeme() {
+        return speme;
+    }
+
+    public void setSpeme(long speme) {
+        this.speme = speme;
+    }
+
+    public String getZspecno() {
+        return zspecno;
+    }
+
+    public void setZspecno(String zspecno) {
+        this.zspecno = zspecno;
+    }
+
+    public String getZspeno() {
+        return zspeno;
+    }
+
+    public void setZspeno(String zspeno) {
+        this.zspeno = zspeno;
     }
 }

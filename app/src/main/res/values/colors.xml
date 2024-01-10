@@ -23,4 +23,7 @@
     <color name="blue_light">#ff33b5e5</color>
     <color name="gray_light">#33999999</color>
     <color name="gray2">#F2F2F2</color>
+    <color name="insme">#ffff00</color>
+    <color name="speme">#ff0000</color>
+    <color name="labst">#00ff00</color>
 </resources>

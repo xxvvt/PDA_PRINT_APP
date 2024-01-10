@@ -137,6 +137,48 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         android:text="密封干燥，远离热源或日晒"/>
+    <TextView
+        android:id="@+id/tv_status_t"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="状态："/>
+    <TextView
+        android:id="@+id/tv_status_v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="待验"/>
+    <TextView
+        android:id="@+id/tv_zspecno_t"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="检验编号："/>
+    <TextView
+        android:id="@+id/tv_zspecno_v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="待验"/>
+    <TextView
+        android:id="@+id/tv_zspeno_t"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="请验编号："/>
+    <TextView
+        android:id="@+id/tv_zspeno_v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:text="待验"/>
     <Button android:layout_width="match_parent" android:layout_height="match_parent"
             android:text="打印" android:id="@+id/btn_print"
             android:layout_marginTop="10dp"
