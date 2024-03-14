@@ -15,15 +15,24 @@
         android:layout_marginTop="100dp"
         android:layout_centerHorizontal="true"
         android:background="@mipmap/ic_launcher"/>
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:id="@+id/username"
+        android:layout_below="@+id/img_logo"
+        android:layout_centerHorizontal="true"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:text="用户名" />
     <Button
         android:id="@+id/btn_print_check"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
         android:text="@string/txt_check"
-        android:layout_below="@+id/img_logo"
+        android:layout_below="@+id/username"
         android:background="@drawable/linear_layout_style"
         android:textColor="@color/white"
         android:textSize="18sp"/>
@@ -45,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/btn_set_def"
        android:layout_centerHorizontal="true"
-
+        android:id="@+id/ll_distance"
         android:orientation="horizontal">
 
         <TextView
@@ -76,6 +85,21 @@
         </Button>
 
     </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_outLogin"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true"
+            android:text="@string/out_login"
+            android:layout_below="@+id/ll_distance"
+            android:background="@drawable/linear_layout_style"
+            android:textColor="@color/white"
+            android:textSize="18sp">
+
+        </Button>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -123,7 +147,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="5dp"
             android:textSize="15sp"
-            android:text="Print_1.1.1_20230103_beta" />
+            android:text="Print_1.1.1_20240117_beta" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.Date;
+import java.util.function.Function;
 
 /**
  * @description log_dic_material_information_true
@@ -113,15 +114,19 @@ public class LogDicMaterialInformationTrue  {
     private String printTime;
 
     private String status;
-    private long labst;
-    private long insme;
-    private long speme;
+    private double  labst;
+    private double  insme;
+    private double  speme;
     private String zspecno;
     private String zspeno;
+    private String fileName;
+    private String fileNo;
     /**
      * l
      */
     DialogInterface.OnClickListener canback;
+
+    Function canback1;
 
     public LogDicMaterialInformationTrue() {}
 
@@ -277,29 +282,7 @@ public class LogDicMaterialInformationTrue  {
         this.status = status;
     }
 
-    public long getLabst() {
-        return labst;
-    }
 
-    public void setLabst(long labst) {
-        this.labst = labst;
-    }
-
-    public long getInsme() {
-        return insme;
-    }
-
-    public void setInsme(long insme) {
-        this.insme = insme;
-    }
-
-    public long getSpeme() {
-        return speme;
-    }
-
-    public void setSpeme(long speme) {
-        this.speme = speme;
-    }
 
     public String getZspecno() {
         return zspecno;
@@ -315,5 +298,53 @@ public class LogDicMaterialInformationTrue  {
 
     public void setZspeno(String zspeno) {
         this.zspeno = zspeno;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFileNo() {
+        return fileNo;
+    }
+
+    public void setFileNo(String fileNo) {
+        this.fileNo = fileNo;
+    }
+
+    public double getLabst() {
+        return labst;
+    }
+
+    public void setLabst(double labst) {
+        this.labst = labst;
+    }
+
+    public double getInsme() {
+        return insme;
+    }
+
+    public void setInsme(double insme) {
+        this.insme = insme;
+    }
+
+    public double getSpeme() {
+        return speme;
+    }
+
+    public void setSpeme(double speme) {
+        this.speme = speme;
+    }
+
+    public Function getCanback1() {
+        return canback1;
+    }
+
+    public void setCanback1(Function canback1) {
+        this.canback1 = canback1;
     }
 }

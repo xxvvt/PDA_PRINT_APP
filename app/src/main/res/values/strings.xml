@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">扫码打印</string>
+    <string name="app_name">PDA扫码打印</string>
     <string name="btn_labeltxt">Label</string>
     <string name="btn_thermaltxt">Thermal</string>
 
@@ -133,4 +133,12 @@
     <string name="return_distance">ReturnPapaer:</string>
     <string name="toast_rerurn_distance_invalid">Illegal paper return distance</string>
     <string name="save_density">保存</string>
+
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="username">请输入用户名</string>
+    <string name="password">请输入密码</string>
+    <string name="login_text">桂林南药PDA打印系统</string>
+    <string name="token">1178E2606F7F788A085A6149C3A880B0</string>
+    <string name="out_login">注销账号</string>
 </resources>

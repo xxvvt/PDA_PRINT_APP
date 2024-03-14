@@ -7,7 +7,13 @@
     android:fitsSystemWindows="true"
     android:background="@color/gray3"
     tools:context=".MainActivity">
-
+    <com.zyao89.view.zloading.ZLoadingView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:z_type="CircleBuilder"
+        app:z_color="@color/black"
+        android:id="@+id/zloadingView"
+        tools:ignore="MissingConstraints" />
     <!-- 扫描二维码功能块 -->
     <LinearLayout
 
@@ -84,40 +90,40 @@
 
     </LinearLayout>
     <!-- 搜索功能块 -->
-<!--    <LinearLayout-->
-<!--        android:id="@+id/searchLayout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:layout_margin="10dp"-->
-<!--        android:layout_marginBottom="20dp"-->
-<!--        android:background="@drawable/rounded_white_background"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/settingsLayout"-->
-<!--        app:layout_constraintHorizontal_bias="0.5"-->
-<!--        app:layout_constraintVertical_bias="0.1">-->
+    <LinearLayout
+        android:id="@+id/testLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/rounded_white_background"
+        app:layout_constraintTop_toBottomOf="@id/settingsLayout"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.1">
 
-<!--        <ImageView-->
-<!--            android:layout_width="60dp"-->
-<!--            android:layout_height="60dp"-->
-<!--            android:src="@drawable/ss"-->
-<!--            android:padding="8dp"-->
-<!--            android:layout_marginRight="20dp"-->
-<!--            android:gravity="center_vertical"-->
-<!--            android:layout_gravity="center_vertical"-->
-<!--            android:background="@drawable/rounded_white_background"-->
-<!--            android:scaleType="centerCrop"-->
-<!--            android:contentDescription="Search Icon" />-->
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ss"
+            android:padding="8dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/rounded_white_background"
+            android:scaleType="centerCrop"
+            android:contentDescription="Search Icon" />
 
-<!--        <TextView-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_weight="1"-->
-<!--            android:text="测试"-->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="测试"
 
-<!--            android:textColor="@color/text_color"-->
-<!--            android:textSize="20sp"-->
-<!--            android:layout_gravity="center_vertical"-->
-<!--            android:gravity="center_vertical" />-->
+            android:textColor="@color/text_color"
+            android:textSize="20sp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical" />
 
-<!--    </LinearLayout>-->
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.qrcode"
-        minSdk 21
+        minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -45,6 +45,8 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
     implementation 'org.projectlombok:lombok:1.18.26'
+    implementation 'com.zyao89:zloading:1.2.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

@@ -4,20 +4,29 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -26,12 +35,31 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.info.LogDicMaterialInformationTrueAdapter;
 import com.example.info.NetHelper;
 import com.example.lc_print_sdk.PrintUtil;
+import com.example.model.LogDicMaterialInformationTrue;
+import com.example.model.ResponseModel;
 import com.example.utils.DialogUtils;
+import com.example.utils.SharedPreferencesUtils;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.ZLoadingView;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -55,16 +83,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-//        LinearLayout searchLayout = this.findViewById(R.id.searchLayout);    //搜索
-//        searchLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
+        LinearLayout searchLayout = this.findViewById(R.id.testLayout);    //测试
+        //隐藏searchLayout
+        searchLayout.setVisibility(View.GONE);
+
+        searchLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
 //                Intent intent = new Intent(MainActivity.this, Print.class);
-//                intent.putExtra(Print.Matnr, "112006285");
-//                intent.putExtra(Print.Charg, "P240109001");
+//                intent.putExtra(Print.Matnr, "112005353");
+//                intent.putExtra(Print.Charg, "P231227002");
 //                startActivity(intent);
-//            }
-//        });
+//                使用okhttp发起get请求
+
+            }
+        });
         LinearLayout sttingLayout = this.findViewById(R.id.settingsLayout);    //设置
 //        sttingLayout.setOnClickListener(new changeXmlListener());
         sttingLayout.setOnClickListener(new View.OnClickListener() {
@@ -214,5 +248,62 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+    private boolean doubleBackToExitPressedOnce = false;
 
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            finishAffinity(); // 关闭所有关联的Activity并退出应用
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "再次点击返回键退出应用", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000); // 2秒钟内再次点击返回键才会真正退出应用
+    }
+
+    //设置编辑框内容
+    public Function getInputFunction(){
+        return new Function() {
+            @Override
+            public Object apply(Object o) {
+                DialogUtils.showText(MainActivity.this,"输入了"+o.toString());
+                return null;
+            }
+        };
+    }
+
+    //解析请求结果
+    public  void parseResponse(String jsonResponse) {
+        String jsonBody = jsonResponse.substring(jsonResponse.indexOf("{"), jsonResponse.lastIndexOf("}") + 1);
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.readTree(jsonBody);
+
+            if (jsonNode.has("status") && jsonNode.get("status").asText().equals("success")) {
+                String accessToken = jsonNode.get("accessToken").asText();
+                String url = jsonNode.get("url").asText();
+                String status = jsonNode.get("status").asText();
+                System.out.println("accessToken: " + accessToken);
+                System.out.println("url: " + url);
+                System.out.println("status: " + status);
+            } else if (jsonNode.has("status") && jsonNode.get("status").asText().equals("fail")) {
+                String errorCode = jsonNode.get("errorCode").asText();
+                String errorMsg = jsonNode.get("errorMsg").asText();
+
+                System.out.println("errorCode: " + errorCode);
+                System.out.println("errorMsg: " + errorMsg);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

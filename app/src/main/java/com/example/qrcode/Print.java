@@ -1,11 +1,14 @@
 package com.example.qrcode;
 
 import android.accessibilityservice.AccessibilityService;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.bld.print.configuration.PrintConfig;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -36,9 +39,12 @@ import com.google.zxing.integration.android.IntentIntegrator;
 
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.function.Function;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -53,7 +59,12 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
     IntentIntegrator intentIntegrator =new IntentIntegrator(Print.this);
     public static final String Matnr = "matnr";
     public static final String Charg = "charg";
+    public static final String Number = "number";
     public static final String url = "http://bi.guilinpharma.com:7080/api/getMaterialInformation";
+    //打印数量
+    public int printNumber = 1;
+    //已打印数量
+    public int printNumberTo = 0;
     private String mPageType;
     private androidx.recyclerview.widget.RecyclerView recyclerView;
 
@@ -63,6 +74,8 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
     private Context mContext;
     private EditText editNoTempCon;
     PrintUtil printUtil;
+
+    ZLoadingDialog printDialog;
 //    public static final String url = "http://127.0.0.1:8801/api/getMaterialInformation";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +93,8 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
         }
         String matnr = getIntent().getStringExtra(Matnr);
         String charg = getIntent().getStringExtra(Charg);
-
+        AlertDialog dialog = DialogUtils.showLoding(Print.this);
         if(matnr != null && charg != null){
-            AlertDialog dialog = DialogUtils.showLoding(this);
             try {
                 ApiPostModel apiPostModel = new ApiPostModel();
                 apiPostModel.setMatnr(matnr);
@@ -97,7 +109,9 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
                     public void onError(Call call, Exception e) {
                         Log.d("error","接口请求失败");
                         Log.d("error",e.toString());
+                        DialogUtils.showWaringDialog(Print.this,"提示","接口请求失败",30000);
                         if (dialog.isShowing()) {
+                            Log.d("关闭对话框","关闭对话框1");
                             dialog.dismiss(); // 关闭对话框
                         }
                     }
@@ -120,16 +134,24 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
                                 recyclerView = findViewById(R.id.recyclerView);
                                 recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(Print.this));
                                 recyclerView.setAdapter(adapter);
-
+                                DialogUtils.showText(Print.this,"数据获取成功");
+                                if (dialog.isShowing()) {
+                                    Log.d("关闭对话框","关闭对话框2");
+                                    dialog.dismiss(); // 关闭对话框
+                                }
                             }else{
-                                DialogUtils.showCustomDialog(Print.this,"提示","数据获取失败          ",null);
+                                DialogUtils.showCustomDialog(Print.this,"提示","数据获取失败",null);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
+                            DialogUtils.showCustomDialog(Print.this,"提示","数据获取失败",null);
+
                             Log.d("error","接口请求解析json失败");
                             Log.d("error",e.toString());
                         }
-
+                        if (dialog.isShowing()) {
+                            dialog.dismiss(); // 关闭对话框
+                        }
                     }
 
                 });
@@ -138,27 +160,51 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
                 Log.d("error","接口请求解析json失败");
                 Log.d("error",e.toString());
             }
-            if (dialog.isShowing()) {
-                dialog.dismiss(); // 关闭对话框
-            }
+
         }
     }
 
     public void setCanBack(List<LogDicMaterialInformationTrue> logs){
-        if(logs.size() != 0) {
 
+        if(logs.size() != 0) {
+            String number  =  getIntent().getStringExtra(Number);
             for (int i = 0; i < logs.size(); i++) {
                 LogDicMaterialInformationTrue log = logs.get(i);
-                DialogInterface.OnClickListener myCanback = new DialogInterface.OnClickListener() {
+//                DialogInterface.OnClickListener myCanback = new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Log.d("点击了确认", "点击了确认");
+//                        printTest(log);
+//
+//                    }
+//                };
+//                log.setCanback(myCanback);
+                if (number != null) {
+                    log.setNum(number);
+                }
+                Function myCanback = new Function() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public Object apply(Object o) {
                         Log.d("点击了确认", "点击了确认");
-                        printTest(log);
+                        Log.d("o", o.toString());
+                        String s = o.toString();
+                        //判断s是否是数字1-999
 
+                        if (s != null && s.matches("[0-9]+")) {
+                            //把string转换成int
+                            printNumber = Integer.parseInt(s);
+                            printTest(log);
+                        }else{
+                            Log.d("输入不正确", "输入不正确");
+                            DialogUtils.showText(Print.this,"输入不正确");
+                        }
+                        return null;
                     }
                 };
-                log.setCanback(myCanback);
+                log.setCanback1(myCanback);
             }
+
+
         }
     }
     private boolean isPrintEnable = false;
@@ -173,16 +219,25 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
             } else {
                 printUtil.printEnableMark (false);
             }
-            printTextTemplate(log);
-//            log.setPrintTime(CommonUtils.getNowTime());
-//            //把log对象转换成json字符串
-//            Gson gson = new Gson();
-//                         String allData = FileUtils.getFileName(this,"allData.json");
-//            if (allData == null) {
-//                allData = "[]";
-//            }
-
-
+            @SuppressLint("ResourceType") String color = getResources().getString(R.color.white);
+            Z_TYPE type = Z_TYPE.SINGLE_CIRCLE;
+            printDialog  = new ZLoadingDialog(Print.this);
+            printDialog.setLoadingBuilder(type)//设置类型
+                    .setLoadingColor(Color.RED)//颜色
+                    .setHintText("打印中...")
+                    .setHintTextSize(16) // 设置字体大小 dp
+                    .setHintTextColor(Color.GRAY)  // 设置字体颜色
+                    .setDurationTime(0.5) // 设置动画时间百分比 - 0.5倍
+                    .setDialogBackgroundColor(Color.parseColor(color)) // 设置背景色，默认白色
+                    .setCanceledOnTouchOutside(false) // 设置是否点击外部取消
+                    .show();
+            printUtil.open();
+            if(!printUtil.isBlackLabel())printUtil.printEnableMark(true);
+//            if (printNumber>3)printNumber=3;
+            printNumberTo = 0;
+            for (int i = 0; i < printNumber; i++) {
+                printTextTemplate(log);
+            }
 
         }catch (Exception e){
             e.printStackTrace();
@@ -190,7 +245,6 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
             Log.d("打印失败","打印失败");
             DialogUtils.showAlertDialog(this, "打印失败", "请检查当前设备是否手持打印机", 3000);
         }
-
     }
 
     public void printTextTemplate(LogDicMaterialInformationTrue log) {
@@ -216,15 +270,25 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
             if(log.getNum()==null){
                 log.setNum("");
             }
+            String fileName = "进厂物料标签";
+            if(log.getFileName()!=null) {
+                fileName = log.getFileName();
+            }
+            String fileNo = "SOP-LD-000001-A03-01";
+            if(log.getFileNo()!=null) {
+                fileNo = log.getFileNo();
+            }
+
+
             //打印浓度
 //            printUtil.printConcentration(26);
-
+            printUtil.setUnwindPaperLen(5);
             //标题
 //            printUtil.printText(PrintConfig.Align.ALIGN_CENTER, PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, false, false, "------------------------------------------------------\n");
 
-            printUtil.printText(PrintConfig.Align.ALIGN_CENTER, PrintConfig.FontSize.TOP_FONT_SIZE_LARGE, true, false, "进厂物料标签\n");
+            printUtil.printText(PrintConfig.Align.ALIGN_CENTER, PrintConfig.FontSize.TOP_FONT_SIZE_LARGE, true, false, fileName+"\n");
 
-            printUtil.printText(PrintConfig.Align.ALIGN_LEFT, PrintConfig.FontSize.TOP_FONT_SIZE_XSMALL, false, false, "文件号: SOP-LD-000001-A03-01\n");
+            printUtil.printText(PrintConfig.Align.ALIGN_LEFT, PrintConfig.FontSize.TOP_FONT_SIZE_XSMALL, false, false, "文件号: "+fileNo+"\n");
 
 //            printUtil.printText(PrintConfig.Align.ALIGN_CENTER, PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, false, false, "------------------------------------------------------\n");
 
@@ -240,19 +304,21 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
             printUtil.printText(PrintConfig.Align.ALIGN_LEFT, PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, false, false, "供应商批号: \t"+log.getMaker()+"\n");
 
             printUtil.printText(PrintConfig.Align.ALIGN_LEFT, PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, false, false, "数量: "+log.getNum()+"\n");
+            if(log.getNum().length()<13)printUtil.printLine (1);
             printUtil.printText(PrintConfig.Align.ALIGN_LEFT, PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, false, false, "有效期至: \t"+log.getVfdat()+"\n");
             printUtil.printText(PrintConfig.Align.ALIGN_LEFT, PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, false, false, "复验期: \t"+log.getFydat()+"\n");
             printUtil.printText(PrintConfig.Align.ALIGN_LEFT, PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, false, false, "储存条件: \t"+log.getStorage()+"\n");
 //            printUtil.printText(PrintConfig.Align.ALIGN_CENTER, PrintConfig.FontSize.TOP_FONT_SIZE_MIDDLE, false, false, "------------------------------------------------------\n");
 
             String text=log.getMatnr()+","+log.getCharg();
-            Bitmap bitmap=BitmapUtils.encode2dAsBitmap (text, BarcodeFormat.QR_CODE, 300, 300);
-            bitmap=BitmapUtils.compressPic (bitmap, 300, 300, 80);
+            Bitmap bitmap=BitmapUtils.encode2dAsBitmap (text, BarcodeFormat.QR_CODE, 200, 200);
+            bitmap=BitmapUtils.compressPic (bitmap, 200, 200, 80);
             printUtil.printBitmap (PrintConfig.Align.ALIGN_CENTER, bitmap);
-
+//            printUtil.printQR(100,200,text);
 //        printUtil.printBitmap(bitmap);
 
-            printUtil.printLine (4);
+//            printUtil.printLine (6);
+//            printUtil.setUnwindPaperLen(5);
             printUtil.start();
         }
 
@@ -283,6 +349,8 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
     @Override
     public void onPrintCallback(int state) {
         Log.e ("testtest", "  state:" + state);
+        printNumberTo++;
+        if (printNumber==printNumberTo)printDialog.dismiss();
 
         canBack=true;
         if (PrintConfig.IErrorCode.ERROR_NO_ERROR == state) {
@@ -351,58 +419,13 @@ public class Print extends BaseActivity implements PrintUtil.PrinterBinderListen
 
     @Override
     public void onBackPressed() {
+
         if (!canBack) {
             return;
         }
         super.onBackPressed ();
     }
 
-    //获取sap数据
-    public void getSapData(){
-        for (int i = 0; i < logDicMaterialInformationTrueList.size(); i++) {
-            LogDicMaterialInformationTrue item = logDicMaterialInformationTrueList.get(i);
-            ApiPostModel apiPostModel = new ApiPostModel();
-            apiPostModel.setMatnr(item.getMatnr());
-            apiPostModel.setCharg(item.getCharg());
-            Gson gson = new Gson();
-            String json = gson.toJson(apiPostModel);
-            Log.d("json",json);
-            MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
-            OkHttpUtils.postString().url(url).addHeader("Content-Type", "application/json").addHeader("Accept", "*/*").content(json).mediaType(mediaType).build().execute(new StringCallback()
-            {
-                @Override
-                public void onError(Call call, Exception e) {
-                    Log.d("error","接口请求失败");
-                    Log.d("error",e.toString());
-                }
 
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        //请求成功的处理
-                        Log.d("success","接口请求成功");
-                        Log.d("success",response);
-                        //解析json
-                        Gson gson = new Gson();
-                        Type type = new TypeToken<List<MB52>>(){}.getType();
-                        List<MB52> responseModel = gson.fromJson(response,type);
-                        if(responseModel.size()>0){
-                            MB52 item  = responseModel.get(0);
-                            item.setCharg(item.getCharg());
-
-                        }else{
-                            DialogUtils.showCustomDialog(Print.this,"提示","数据获取失败          ",null);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.d("error","接口请求解析json失败");
-                        Log.d("error",e.toString());
-                    }
-
-                }
-
-            });
-        }
-    }
 
 }

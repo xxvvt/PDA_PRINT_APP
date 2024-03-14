@@ -62,15 +62,18 @@ public class Scan extends AppCompatActivity {
         Intent intent = new Intent(Scan.this, Print.class);  //intent是Android里用于activity之间信息传递的类
 
         String text = intentResult.getContents();
-        //判断是否是112005353,P231227002格式
+        //判断是否是112005353,P231227002格式或者112005353,P231227002,${数量}格式
         try{
-            if (text.length() == 20) {
+            if (text.length() >= 20) {
                 String[] split = text.split(",");
-                if (split.length == 2) {
+                if (split.length == 2 || split.length == 3) {
                     if (split[0].length() == 9 && split[1].length() == 10) {
                         Log.d("success","二维码内容正确");
                         intent.putExtra(Print.Matnr, split[0]);
                         intent.putExtra(Print.Charg, split[1]);
+                        if (split.length == 3) {
+                            intent.putExtra(Print.Number, split[2]);
+                        }
                         startActivity(intent);
                         finish();
                     }else{

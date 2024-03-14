@@ -70,7 +70,8 @@ public class LogDicMaterialInformationTrueAdapter extends RecyclerView.Adapter<L
         holder.btn_print.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                DialogUtils.showCustomDialog(v.getContext(), "确认打印","物料："+infoBlock.getMaktx()+"？",infoBlock.getCanback());
+//                DialogUtils.showCustomDialog(v.getContext(), "确认打印","物料："+infoBlock.getMaktx()+"？",infoBlock.getCanback());
+                DialogUtils.showCustomDialogWithInput(v.getContext(), "确认打印","物料："+infoBlock.getMaktx()+"？", infoBlock.getCanback1());
             }
         });
 
@@ -78,16 +79,27 @@ public class LogDicMaterialInformationTrueAdapter extends RecyclerView.Adapter<L
     public void setStatus(@NonNull ViewHolder holder,LogDicMaterialInformationTrue infoBlocks) {
         if(infoBlocks.getInsme()>0){
             holder.tv_status_v.setText("待验");
-            //指定文字颜色为@color/insme
-            holder.tv_status_v.setTextColor(holder.itemView.getResources().getColor(R.color.insme));
+            //指定背景颜色为@color/insme
+            holder.tv_status_v.setBackgroundColor(holder.itemView.getResources().getColor(R.color.insme));
         }
         else if(infoBlocks.getSpeme()>0){
             holder.tv_status_v.setText("不合格");
-            holder.tv_status_v.setTextColor(holder.itemView.getResources().getColor(R.color.speme));
+            holder.tv_status_v.setTextColor(holder.itemView.getResources().getColor(R.color.white));
+            holder.tv_status_v.setBackgroundColor(holder.itemView.getResources().getColor(R.color.speme));
         }
         else if(infoBlocks.getLabst()>0){
             holder.tv_status_v.setText("合格");
-            holder.tv_status_v.setTextColor(holder.itemView.getResources().getColor(R.color.labst));
+            holder.tv_status_v.setBackgroundColor(holder.itemView.getResources().getColor(R.color.labst));
+        }
+        //同时有两种数量时只展示合格数量
+        if (infoBlocks.getLabst() > 0 && infoBlocks.getSpeme() > 0 ){
+            holder.tv_status_v.setText("合格 "+infoBlocks.getLabst());
+            holder.tv_status_v.setBackgroundColor(holder.itemView.getResources().getColor(R.color.labst));
+        }
+        if (infoBlocks.getLabst() == 0 && infoBlocks.getSpeme() == 0 && infoBlocks.getInsme() == 0) {
+            holder.tv_status_v.setVisibility(View.GONE);
+            holder.tv_status_t.setVisibility(View.GONE);
+//            holder.tv_status_v.setBackgroundColor(holder.itemView.getResources().getColor(R.color.white));
         }
     }
 
@@ -109,7 +121,7 @@ public class LogDicMaterialInformationTrueAdapter extends RecyclerView.Adapter<L
         public TextView tv_status_v;
         public TextView tv_zspecno_v;
         public TextView tv_zspeno_v;
-
+        public TextView tv_status_t;
         public Button btn_print;
 
         public ViewHolder(@NonNull View itemView) {
@@ -127,6 +139,7 @@ public class LogDicMaterialInformationTrueAdapter extends RecyclerView.Adapter<L
             tv_status_v = itemView.findViewById(R.id.tv_status_v);
             tv_zspecno_v = itemView.findViewById(R.id.tv_zspecno_v);
             tv_zspeno_v = itemView.findViewById(R.id.tv_zspeno_v);
+            tv_status_t = itemView.findViewById(R.id.tv_status_t);
 
 //            textValue = itemView.findViewById(R.id.textValue);
         }

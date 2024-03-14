@@ -56,7 +56,7 @@ public class Generate extends AppCompatActivity {
                 super.run();
                 try {
                     sleep(1000);//使程序休眠3秒
-                    Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                    Intent intent=new Intent(getApplicationContext(),Login.class);
                     startActivity(intent);
                     finish();
                 }catch (Exception e){

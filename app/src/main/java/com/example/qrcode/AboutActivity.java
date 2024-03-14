@@ -3,6 +3,8 @@ package com.example.qrcode;
 
 
 import android.bld.print.configuration.PrintConfig;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,9 +19,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 
 import com.example.lc_print_sdk.PrintUtil;
+import com.example.model.PdaAppUser;
 import com.example.utils.CommonUtils;
 import com.example.utils.DialogUtils;
 import com.example.utils.SPUtils;
+import com.example.utils.SharedPreferencesUtils;
+import com.google.gson.Gson;
 
 
 import java.text.SimpleDateFormat;
@@ -45,6 +50,28 @@ public class AboutActivity extends BaseActivity implements PrintUtil.PrinterBind
             //返回按钮
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        SharedPreferencesUtils sharedPreferencesUtils = new SharedPreferencesUtils(AboutActivity.this);
+        //退出登录
+        Button btn_outLogin = findViewById(R.id.btn_outLogin);
+        btn_outLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogUtils.showCustomDialog(AboutActivity.this, "确定退出登录？",  new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sharedPreferencesUtils.clearAll();
+                        Intent intent = new Intent(AboutActivity.this, Login.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+        });
+        //显示用户名
+        TextView txt_username = findViewById(R.id.username);
+        Gson gson = new Gson();
+        String json = sharedPreferencesUtils.getString("Data", "");
+        PdaAppUser pdaAppUser = gson.fromJson(json, PdaAppUser.class);
+        txt_username.setText(pdaAppUser.getRealname());
         try {
             printUtil =PrintUtil.getInstance (this);
             printUtil.setPrintEventListener (this);
@@ -62,6 +89,7 @@ public class AboutActivity extends BaseActivity implements PrintUtil.PrinterBind
 
             mEditCon=findViewById (R.id.edit_con);
             mEditCon.setText (density+"");
+
 
             btn_density.setOnClickListener (new View.OnClickListener () {
                 @Override
